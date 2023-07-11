@@ -27,7 +27,7 @@ def enter(car_number, curr_time, entry_gate):
         return 0
     elif status == 0:
         try:
-            command = f"insert into systum(car_number, timestamp_of_entry, status) values('{car_number}', '{curr_time}', 1);"
+            command = f"insert into systum(car_number, timestamp_of_entry, status) values('{car_number}', '{curr_time}', {entry_gate});"
             cur.execute(command)
             db.commit()
             return 1
@@ -36,7 +36,7 @@ def enter(car_number, curr_time, entry_gate):
 
 
 
-def exit(car_number, curr_time):
+def exit(car_number, curr_time, exit_gate):
     status = check_status(car_number)
     if status == -1:
         return -1
@@ -44,7 +44,7 @@ def exit(car_number, curr_time):
         return 0
     elif status == 1:
         try:
-            command = f"update systum set status = 0, timestamp_of_exit = '{curr_time}' where car_number = '{car_number}'"
+            command = f"update systum set status = 0, timestamp_of_exit = '{curr_time}' where car_number = '{car_number} where gate_of_exit={exit_gate}'"
             cur.execute(command)
             db.commit()
             return 1
@@ -70,7 +70,7 @@ def check_status(car_number):
     
 
 start = time.time()
-enter("DL1CX2621", str(dt.now()))
+enter("DL1CX2621", str(dt.now()),)
 end = time.time()
 print(end-start)
 
